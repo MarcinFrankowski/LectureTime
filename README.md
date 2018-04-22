@@ -9,4 +9,4 @@ In a coherent, convenient way, it provides the functionality most commonly used 
 
 LectureTime uses the LDAP service provided by the Faculty of Mathematics and Computer Science of Adam Mickiewicz University in Poznań. LectureTime itself does not store user credentials. We recommend to implement custom authentication / no authentication in order to use app without access to University LDAP service. 
 
-Complete polish documentation in file: [LectureTime_dokumentacja.pdf](../LectureTime_dokumentacja.pdf)
+Complete polish documentation in file: [LectureTime_dokumentacja.pdf](../master/LectureTime_dokumentacja.pdf)
