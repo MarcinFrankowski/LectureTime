@@ -1,0 +1,133 @@
+﻿@model Lecture_Time.Models.CyclicAppointmentDetailsViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="hidden-xs hidden-sm">
+            <img src="~/Content/logo.jpg" class="img-responsive" alt="Responsive image">
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h2>Consultations</h2>
+        <hr />
+        <h4>
+            @Html.DisplayFor(model => model.Lecturer.LTUser.FirstName)
+            @Html.DisplayFor(model => model.Lecturer.LTUser.LastName)
+            <small>(@Html.DisplayFor(model => model.Lecturer.LTUser.Email))</small>
+        </h4>
+        <hr />
+        @if (Model.CurrentUser.Email == Model.Lecturer.LTUser.Email)
+        {
+            <p>
+                @Html.ActionLink("Create New", "Create")
+            </p>
+            <hr />
+        }
+        @if (Model.CyclicAppointments.Any())
+        {
+            <table class="table table-striped hidden-xs">
+                <tr>
+                    <th>
+                        Day of the week
+                    </th>
+                    <th>
+                        Start time
+                    </th>
+                    <th>
+                        End time
+                    </th>
+                    <th>
+                        Location
+                    </th>
+                    <th>
+                        Options
+                    </th>
+                </tr>
+                @foreach (var item in Model.CyclicAppointments)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DayOfWeek)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Location)
+                        </td>
+                        <td>
+                            @if (Model.CurrentUser.Email == Model.Lecturer.LTUser.Email)
+                            {
+                                <span>
+                                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                </span>
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Sign up", "Assign", new { id = item.Id })
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+            <div class="visible-xs" hidden>
+                @foreach (var item in Model.CyclicAppointments)
+                {
+                    <h4>Cyclic appointment</h4>
+                    <p>
+                        <b>@Html.DisplayNameFor(modelItem => item.DayOfWeek)</b>
+                    </p>
+                    <p>
+                        @Html.DisplayFor(modelItem => item.DayOfWeek)
+                    </p>
+                    <p>
+                        <b>@Html.DisplayNameFor(modelItem => item.StartTime)</b>
+                    </p>
+                    <p>
+                        @Html.DisplayFor(modelItem => item.StartTime)
+                    </p>
+                    <p>
+                        <b>@Html.DisplayNameFor(modelItem => item.EndTime)</b>
+                    </p>
+                    <p>
+                        @Html.DisplayFor(modelItem => item.EndTime)
+                    </p>
+                    <p>
+                        <b>@Html.DisplayNameFor(modelItem => item.Location)</b>
+                    </p>
+                    <p>
+                        @Html.DisplayFor(modelItem => item.Location)
+                    </p>
+                    <p>
+                        <b>Options</b>
+                    </p>
+                    <p>
+                        @if (Model.CurrentUser.Email == Model.Lecturer.LTUser.Email)
+                       {
+                            <span>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                            </span>
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Sign up", "Assign", new { id = item.Id })
+                        }
+                    </p>
+                    <br />
+                }
+            </div>
+        }
+        else
+        {
+            <p>There are no dates specified for consultations yet.</p>
+        }
+    </div>
+</div>

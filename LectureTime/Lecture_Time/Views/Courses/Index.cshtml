@@ -1,0 +1,63 @@
+﻿@*@model IEnumerable<Lecture_Time.Models.Course>*@
+@model Lecture_Time.Models.LTUser
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="hidden-xs hidden-sm">
+            <img src="~/Content/logo.jpg" class="img-responsive" alt="Responsive image">
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h2>Courses</h2>
+        <hr />
+        @if (Model.IsLecturer || Model.IsAdmin)
+        {
+            <p>
+                @Html.ActionLink("Create New", "Create")
+            </p>
+            <hr />
+        }
+        <table class="table table-striped">
+            <tr class="hidden-xs">
+                <th>
+                    @Html.DisplayNameFor(model => model.Courses[0].CourseName)
+                </th>
+                <th>Options</th>
+            </tr>
+            @foreach (var item in Model.Courses)
+            {
+                <tr>
+                    <td class="hidden-xs">
+                        @Html.DisplayFor(modelItem => item.CourseName)
+                    </td>
+                    <td>
+                        <span class="visible-xs" hidden>
+                            @Html.DisplayFor(modelItem => item.CourseName)
+                        </span>
+                        @*Zmienic tak, aby opcje widzial tylko wlasciciel kursu i admin*@
+                        @if (item.Lecturer.LTUserId == Model.Id || Model.IsAdmin)
+                        {
+                            <p>
+                                @Html.ActionLink("View", "Details", new { id = item.Id }) |
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.Id }) |
+                                @Html.ActionLink("Add a lecture", "Create", "Lectures", new { id = item.Id }, null)
+                            </p>
+                        }
+                        else
+                        {
+                            <p>
+                                @Html.ActionLink("View", "Details", new { id = item.Id })
+                            </p>
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

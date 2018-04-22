@@ -1,0 +1,198 @@
+﻿@model Lecture_Time.Models.CourseViewModel
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="hidden-xs hidden-sm">
+            <img src="~/Content/logo.jpg" class="img-responsive" alt="Responsive image">
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h2>
+            @Html.DisplayFor(model => model.Course.CourseName)
+        </h2>
+        <hr />
+        @if (Model.CanEdit)
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Course.Id })
+            <hr />
+        }
+        <table class="table table-striped hidden-xs">
+            <tbody>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Course.Content)
+                    </th>
+                    <td>
+                        @if (Model.Course.Content.IsEmpty())
+                        {
+                            <p>
+                                No description to show.
+                            </p>
+                        }
+                        else
+                        {
+                            <p id="justify">
+                                @Html.DisplayFor(model => model.Course.Content)
+                            </p>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Course.AdditionalContent)
+                    </th>
+                    <td>
+                        @if (Model.Course.AdditionalContent.IsEmpty())
+                        {
+                            <p>
+                                No recommended literature to show.
+                            </p>
+                        }
+                        else
+                        {
+                            <p>
+                                @Html.DisplayFor(model => model.Course.AdditionalContent)
+                            </p>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Course.Results)
+                    </th>
+                    <td>
+                        @if (Model.Course.Results.IsEmpty())
+                        {
+                            <p>
+                                No results to show.
+                            </p>
+                        }
+                        else
+                        {
+                            <p>
+                                <a target="_blank" href="@Html.DisplayFor(model => model.Course.Results)">
+                                    @Html.DisplayFor(model => model.Course.Results)
+                                </a>
+                            </p>
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="visible-xs" hidden>
+            @*<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseDescription" aria-expanded="false" aria-controls="collapseTable">
+                Show course description
+            </button>
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseMaterials" aria-expanded="false" aria-controls="collapseTable">
+                Show recommended literature
+            </button>
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseResults" aria-expanded="false" aria-controls="collapseTable">
+                Show results
+            </button>
+            <hr />
+            <div class="collapse" id="collapseDescription">
+                <div class="card card-body">*@
+                    <p>
+                        <b>@Html.DisplayNameFor(model => model.Course.Content)</b>
+                    </p>
+                    @if (Model.Course.Content.IsEmpty())
+                    {
+                        <p>
+                            No description to show.
+                        </p>
+                    }
+                    else
+                    {
+                        <p id="justify">
+                            @Html.DisplayFor(model => model.Course.Content)
+                        </p>
+                    }
+                @*</div>
+            </div>
+            <div class="collapse" id="collapseMaterials">
+                <div class="card card-body">*@
+                    <p>
+                        <b>@Html.DisplayNameFor(model => model.Course.AdditionalContent)</b>
+                    <p>
+                    @if (Model.Course.AdditionalContent.IsEmpty())
+                    {
+                        <p>
+                            No recommended literature to show.
+                        </p>
+                    }
+                    else
+                    {
+                        <p>
+                            @Html.DisplayFor(model => model.Course.AdditionalContent)
+                        </p>
+                    }
+                @*</div>
+            </div>
+            <div class="collapse" id="collapseResults">
+                <div class="card card-body">*@
+                    <p>
+                        <b>@Html.DisplayNameFor(model => model.Course.Results)</b>
+                    </p>
+                    @if (Model.Course.Results.IsEmpty())
+                    {
+                        <p>
+                            No results to show.
+                        </p>
+                    }
+                    else
+                    {
+                        <p>
+                            <a target="_blank" href="@Html.DisplayFor(model => model.Course.Results)">
+                                @Html.DisplayFor(model => model.Course.Results)
+                            </a>
+                        </p>
+                    }
+                @*</div>
+            </div>*@
+        </div>
+        <br />
+        <h3>Lectures</h3>
+        @if (Model.Course.Lectures.Any())
+        {
+            <table class="table table-striped">
+                <tr class="hidden-xs">
+                    <th>Lecture title</th>
+                    <th>Options</th>
+                </tr>
+                @foreach (var lect in Model.Course.Lectures)
+                {
+                    <tr>
+                        <td class="hidden-xs">@lect.LectureName</td>
+                        <td>
+                            <span class="visible-xs" hidden>@lect.LectureName</span>
+                            @if (Model.CanEdit)
+                            {
+                                <p>
+                                    @Html.ActionLink("View", "Details", "Lectures", new { id = lect.Id }, null) |
+                                    @Html.ActionLink("Edit", "Edit", "Lectures", new { id = lect.Id }, null) |
+                                    @Html.ActionLink("Delete", "Delete", "Lectures", new { id = lect.Id }, null)
+                                </p>
+                            }
+                            else
+                            {
+                                <p>
+                                    @Html.ActionLink("View", "Details", "Lectures", new { id = lect.Id }, null)
+                                </p>
+                            }
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+        else
+        {
+            <p>
+                No lectures to show.
+            </p>
+        }
+    </div>
+</div>

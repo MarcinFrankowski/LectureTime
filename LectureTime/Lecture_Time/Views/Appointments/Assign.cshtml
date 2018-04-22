@@ -1,0 +1,48 @@
+﻿@model Lecture_Time.Models.AssignAppointmentViewModel
+@{
+    ViewBag.Title = "Assign";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="hidden-xs hidden-sm">
+            <img src="~/Content/logo.jpg" class="img-responsive" alt="Responsive image">
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h2>Sign up for an appointment</h2>
+        <hr />
+        <h4>Choose a date and time from the list below.</h4>
+        <hr />
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.CyclicAppointmentId)
+            <div class="form form-inline">
+                @*--- stara wersja ---*@
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(m => m.SelectedDate, Model.AvailableDates, new { @class = "form-control"})
+
+                @*--- nowa wersja ---*@
+                @*<div class="form-group">
+                    <select class="form-control">
+                        @foreach (var item in Model.AvailableDates)
+                        {
+                            <option>
+                                @item.Value
+                            </option>
+                        }
+                    </select>
+                </div>*@
+                <div class="form-group">
+                    <input type="submit" value="Sign up" class="btn btn-primary" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

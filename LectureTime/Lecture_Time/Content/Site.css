@@ -1,0 +1,76 @@
+﻿body {
+    padding-top: 70px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+/*input,
+select,
+textarea {
+    max-width: 280px;
+}*/
+
+#password_input, #login_input {
+    max-width: 280px;
+}
+
+.navbar-inverse {
+    background-color: navy;
+}
+
+img {
+    position: fixed;
+    width: 8%;
+    margin-top: 10px;
+}
+
+#CredentialsError {
+    margin-bottom: 8px;
+}
+
+.navbar-text {
+    margin-left: 15px;
+}
+
+#brand {
+    color: #DFDFDF;
+}
+
+.myTextarea {
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 80px;
+    height: 80px;
+}
+
+#commentTextarea {
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 35px;
+    height: 35px;
+}
+
+a {
+    word-wrap: break-word;
+}
+
+#justify {
+    text-align: justify;
+}
+
+#student_checkbox {
+    margin-right: 30px;
+}

@@ -1,0 +1,223 @@
+﻿@model  Lecture_Time.Models.LecturersWithAppointmentsViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="hidden-xs hidden-sm">
+            <img src="~/Content/logo.jpg" class="img-responsive" alt="Responsive image">
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h2>Consultations</h2>
+        <hr />
+        <h4>Your upcoming appointments</h4>
+        @{ 
+            var futureAppointments = Model.AssignedAppointments.Where(ap => ap.Date >= DateTime.Now).OrderBy(ap => ap.Date.Value.Date).ThenBy(ap => ap.Date.Value.TimeOfDay);
+            var pastAppointments = Model.AssignedAppointments.Where(ap => ap.Date < DateTime.Now).OrderByDescending(ap => ap.Date.Value.Date).ThenByDescending(ap => ap.Date.Value.TimeOfDay);
+        }
+        @if (futureAppointments.Any())
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Date and time
+                        </th>
+                        <th>
+                            Location
+                        </th>
+                        <th>
+                            Person
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in futureAppointments)
+                    {
+                        // Tutaj możesz sprawdzać czy użytkownik jest studentem (model.ltuser.isstudent) i wyświetlać dane prowadzącego, jeśli jest wykładowcą to wyświetlić dane studenta(item.LTUser.FirstName)
+                        <tr>
+                            <td>
+                                @item.Date
+                            </td>
+                            <td>
+                                @item.CyclicAppointment.Location
+                            </td>
+                            @if (Model.LTUser.IsStudent && !Model.LTUser.IsAdmin)
+                            {
+                                <td>
+                                    @item.CyclicAppointment.Lecturer.LTUser.FirstName
+                                    @item.CyclicAppointment.Lecturer.LTUser.LastName
+                                    <small>(@item.CyclicAppointment.Lecturer.LTUser.Email)</small>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    @item.LTUser.FirstName
+                                    @item.LTUser.LastName
+                                    <small>(@item.LTUser.Email)</small>
+                                </td>
+                            }
+                            <td>
+                                @if (item.IsAccepted)
+                                {
+                                    <span>Accepted</span>
+                                }
+                                else if ((Model.LTUser.IsLecturer || Model.LTUser.IsAdmin) && !item.IsAccepted)
+                                {
+                                    @Html.ActionLink("Accept", "AcceptAppointment", new { id = item.Id })
+                                }
+                                else
+                                {
+                                    <span>Not accepted yet</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>
+                You don't have any upcoming appointments.
+            </p>
+        }
+        <hr />
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTable" aria-expanded="false" aria-controls="collapseTable">
+            Show appointments history
+        </button>
+        <div class="collapse" id="collapseTable">
+            <div class="card card-body">
+                <h4>Your past appointments</h4>
+                @if (pastAppointments.Any())
+                {
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Date and time
+                                </th>
+                                <th>
+                                    Location
+                                </th>
+                                <th>
+                                    Person
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in pastAppointments)
+                            {
+                                // Tutaj możesz sprawdzać czy użytkownik jest studentem (model.ltuser.isstudent) i wyświetlać dane prowadzącego, jeśli jest wykładowcą to wyświetlić dane studenta(item.LTUser.FirstName)
+                                <tr>
+                                    <td>
+                                        @item.Date
+                                    </td>
+                                    <td>
+                                        @item.CyclicAppointment.Location
+                                    </td>
+                                    @if (Model.LTUser.IsStudent && !Model.LTUser.IsAdmin)
+                                    {
+                                        <td>
+                                            @item.CyclicAppointment.Lecturer.LTUser.FirstName
+                                            @item.CyclicAppointment.Lecturer.LTUser.LastName
+                                            <small>(@item.CyclicAppointment.Lecturer.LTUser.Email)</small>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>
+                                            @item.LTUser.FirstName
+                                            @item.LTUser.LastName
+                                            <small>(@item.LTUser.Email)</small>
+                                        </td>
+                                    }
+                                    <td>
+                                        @if (item.IsAccepted)
+                                        {
+                                            <span>Accepted</span>
+                                        }
+                                        else if ((Model.LTUser.IsLecturer || Model.LTUser.IsAdmin) && !item.IsAccepted)
+                                        {
+                                            @Html.ActionLink("Accept", "AcceptAppointment", new { id = item.Id })
+                                        }
+                                        else
+                                        {
+                                            <span>Not accepted yet</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>
+                        You don't have any past appointments.
+                    </p>
+                }
+            </div>
+        </div>
+        <hr />
+        <h4>Lecturers</h4>
+        @foreach (var item in Model.Lecturers)
+        {
+            <p>@Html.ActionLink(item.LTUser.FirstName +" "+ item.LTUser.LastName, "Details", new { id = item.LecturerId })</p>
+        }
+    </div>
+</div>
+
+@*<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Lecturer.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DayOfWeek)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Time)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Location)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Lecturer.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DayOfWeek)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Time)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Location)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>*@

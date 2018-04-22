@@ -1,0 +1,78 @@
+﻿@model Lecture_Time.Models.LectureViewModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="hidden-xs hidden-sm">
+            <img src="~/Content/logo.jpg" class="img-responsive" alt="Responsive image">
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h2>Edit the chosen lecture</h2>
+        <hr />
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Id)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.LectureName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.LectureName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.LectureName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @*@Html.EditorFor(model => model.Content, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @Html.TextAreaFor(model => model.Content, new { @class = "form-control myTextarea" })
+                        @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AdditionalContent, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @*@Html.EditorFor(model => model.AdditionalContent, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @Html.TextAreaFor(model => model.AdditionalContent, new { @class = "form-control myTextarea" })
+                        @Html.ValidationMessageFor(model => model.AdditionalContent, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <br />
+                <div class="col-md-offset-2 col-md-10">
+                    <h4>
+                        <small>Titles of videos on YouTube are saved in format: <b>UAM LECTURER_SURNAME LECTURE_TITLE</b></small>
+                    </h4>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.VideoLink, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @*@Html.EditorFor(model => model.VideoLink, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @Html.TextAreaFor(model => model.VideoLink, new { @class = "form-control myTextarea" })
+                        @Html.ValidationMessageFor(model => model.VideoLink, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        }
+        @*<hr />*@
+        @*<div>
+            <a href="javascript:void(0);" onclick="history.go(-1);">Back</a>
+        </div>*@
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

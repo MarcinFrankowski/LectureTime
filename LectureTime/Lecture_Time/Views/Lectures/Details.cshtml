@@ -1,0 +1,184 @@
+﻿@model Lecture_Time.Models.Lecture
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="hidden-xs hidden-sm">
+            <img src="~/Content/logo.jpg" class="img-responsive" alt="Responsive image">
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h2>
+            @Html.DisplayFor(model => model.LectureName)
+        </h2>
+        <hr />
+        @*moze edytowac tylko admin lub wykladowca, ktory stworzyl dany kurs*@
+        @if (Model.Course.Lecturer.LTUser.IsLecturer || Model.Course.Lecturer.LTUser.IsAdmin)
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
+            <hr />
+        }
+        <table class="table table-striped hidden-xs">
+            <tbody>
+                <tr>
+                    <th>
+                        Course
+                    </th>
+                    <td>
+                        @if (Model.Course.CourseName.IsEmpty())
+                        {
+                            <p>
+                                No course name to show.
+                            </p>
+                        }
+                        else
+                        {
+                            <p>
+                                @Html.DisplayFor(model => model.Course.CourseName)
+                            </p>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Content)
+                    </th>
+                    <td>
+                        @if (Model.Content.IsEmpty())
+                        {
+                            <p>
+                                No description to show.
+                            </p>
+                        }
+                        else
+                        {
+                            <p id="justify">
+                                @Html.DisplayFor(model => model.Content)
+                            </p>
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AdditionalContent)
+                    </th>
+                    <td>
+                        @if (Model.AdditionalContent.IsEmpty())
+                        {
+                            <p>
+                                No learning materials to show.
+                            </p>
+                        }
+                        else
+                        {
+                            <p>
+                                <a target="_blank" href="@Html.DisplayFor(model => model.AdditionalContent)">
+                                    @Html.DisplayFor(model => model.AdditionalContent)
+                                </a>
+                            </p>
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="visible-xs" hidden>
+            @*<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseDescription" aria-expanded="false" aria-controls="collapseTable">
+                Show lecture description
+            </button>
+            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseMaterials" aria-expanded="false" aria-controls="collapseTable">
+                Show learning materials
+            </button>
+            <hr />
+            <div class="collapse" id="collapseDescription">
+                <div class="card card-body">*@
+                    <p>
+                        <b>@Html.DisplayNameFor(model => model.Content)</b>
+                    </p>
+                    @if (Model.Content.IsEmpty())
+                    {
+                        <p>
+                            No description to show.
+                        </p>
+                    }
+                    else
+                    {
+                        <p id="justify">
+                            @Html.DisplayFor(model => model.Content)
+                        </p>
+                    }
+                @*</div>
+            </div>
+            <div class="collapse" id="collapseMaterials">
+                <div class="card card-body">*@
+                    <p>
+                        <b>@Html.DisplayNameFor(model => model.AdditionalContent)</b>
+                    <p>
+                    @if (Model.AdditionalContent.IsEmpty())
+                    {
+                    <p>
+                        No learning materials to show.
+                    </p>
+                    }
+                    else
+                    {
+                        <p>
+                            <a target="_blank" href="@Html.DisplayFor(model => model.AdditionalContent)">
+                                @Html.DisplayFor(model => model.AdditionalContent)
+                            </a>
+                        </p>
+                    }
+                @*</div>
+            </div>*@
+        </div>
+        <br />
+        @if (!Model.VideoLink.IsEmpty())
+        {
+            <br />
+            <div class="embed-responsive embed-responsive-4by3">
+                <iframe class="embed-responsive-item" src="@Html.DisplayFor(model => model.VideoLink)" allowfullscreen></iframe>
+            </div>
+        }
+        else
+        {
+            <p>No video to show.</p>
+        }
+        <br />
+        @using (Html.BeginForm("AddComment", "Lectures", null, FormMethod.Post, null))
+        {
+            <div class="row">
+                <div class="col-sm-10">
+                    <div class="form-group">
+                        @Html.TextArea("CommentContent", new { @class = "form-control", id = "commentTextarea", placeholder = "New Comment"})
+                        @Html.Hidden("LectureId", Model.Id)
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <input type="submit" id ="addCommentBtn" class="btn btn-primary" value="Add Comment" />
+                </div>
+            </div>
+        }
+        <br />
+        @if (Model.Comments != null && Model.Comments.Any())
+        {
+            foreach (var comment in Model.Comments)
+            {
+                <div class="media">
+                    <div class="media-left">
+                        <span class="glyphicon glyphicon-comment" aria-hidden="true"></span>
+                    </div>
+                    <div class="media-body">
+                        <h5 class="media-heading">
+                            <b>@comment.LTUser.FirstName @comment.LTUser.LastName</b>
+                            <small>@comment.SubmitDate.Value.ToString("dd.MM.yyyy hh:mm")</small>
+                        </h5>
+                        <p>@comment.CommentContent</p>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
