@@ -1,9 +1,9 @@
 # LectureTime
 ## Student and lecturer friendly e-learning application providing easy access to lectures, consultations and additional teaching materials. 
 
-### Application is currently used by lecturers and students of the Faculty of Mathematics and Computer Science of Adam Mickiewicz University in Poznań (https://lecturetime.wmi.amu.edu.pl/)
+### Application is currently used by lecturers and students of the Faculty of Mathematics and Computer Science of Adam Mickiewicz University in Poznań
 
-LectureTime is a tool designed for modern universities which want to pass knowledge in the most efficent way.
+LectureTime is a system designed for modern universities which want to pass knowledge in the most efficent way.
 In a coherent, convenient way, it provides the functionality most commonly used in education:
 - information about courses
 - lecture materials
